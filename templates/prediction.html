@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction - AgriSmart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* New Theme: Modern Teal & Slate */
+        :root { --theme-primary: #0d9488; --theme-dark: #115e59; }
+        .bg-success { background-color: var(--theme-primary) !important; }
+        .text-success { color: var(--theme-primary) !important; }
+        .btn-success { background-color: var(--theme-primary) !important; border-color: var(--theme-dark) !important; }
+        .btn-success:hover { background-color: var(--theme-dark) !important; }
+        .navbar-custom { background-color: #0f172a !important; } /* Dark Slate */
+        
+        /* Background Image for Prediction Section */
+        .predictor-bg-image {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.15;
+            z-index: 0;
+        }
+        .predictor-section { position: relative; overflow: hidden; }
+        .predictor-section .container { position: relative; z-index: 2; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top navbar-custom">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold logo-text" href="/">
+                <i class="bi bi-leaf-fill leaf-icon"></i> AgriSmart
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link active" href="/prediction">Prediction</a>
+                    <a class="nav-link" href="/crops">Crops Catalog</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Predictor Section -->
+    <section class="predictor-section py-5" id="predictor">
+        <div class="predictor-bg-image"></div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-9">
+                    <!-- Section Header -->
+                    <div class="text-center mb-5">
+                        <div class="section-icon">
+                            <i class="bi bi-flower2"></i>
+                        </div>
+                        <h2 class="section-title">Get Your Crop Recommendation</h2>
+                        <p class="section-subtitle">Enter your soil and climate details below</p>
+                    </div>
+
+                    <!-- Prediction Form Card -->
+                    <div class="card prediction-card shadow-xl">
+                        <div class="card-header bg-success bg-gradient">
+                            <h5 class="text-white mb-0"><i class="bi bi-pencil-square"></i> Enter Your Details</h5>
+                        </div>
+                        <div class="card-body p-5">
+                            <form method="post" id="predictionForm">
+                                <!-- Soil Type Field -->
+                                <div class="form-group mb-4">
+                                    <label for="soil" class="form-label fw-bold">
+                                        <i class="bi bi-geo-alt-fill text-danger"></i> Soil Type
+                                    </label>
+                                    <select name="soil" id="soil" class="form-select form-select-lg shadow-sm" required>
+                                        <option value="">🌍 Select soil type...</option>
+                                        <option value="Loamy">🟫 Loamy Soil (Most Fertile)</option>
+                                        <option value="Clay">🟫 Clay Soil (Heavy)</option>
+                                        <option value="Sandy">🟡 Sandy Soil (Light)</option>
+                                        <option value="Alluvial">🟡 Alluvial Soil (River Plains)</option>
+                                        <option value="Red">🔴 Red Soil (Laterite)</option>
+                                    </select>
+                                    <small class="text-muted d-block mt-2">
+                                        <i class="bi bi-info-circle"></i> Choose based on your region's dominant soil type
+                                    </small>
+                                </div>
+
+                                <!-- Temperature Field -->
+                                <div class="form-group mb-4">
+                                    <label for="temperature" class="form-label fw-bold">
+                                        <i class="bi bi-thermometer-half text-warning"></i> Temperature (°C)
+                                    </label>
+                                    <div class="input-group input-group-lg">
+                                        <input type="number" name="temperature" id="temperature" class="form-control shadow-sm" 
+                                               placeholder="e.g., 25" min="0" max="50" step="0.1" required>
+                                        <span class="input-group-text">°C</span>
+                                    </div>
+                                    <small class="text-muted d-block mt-2">
+                                        <i class="bi bi-info-circle"></i> Annual average temperature (0-50°C)
+                                    </small>
+                                </div>
+
+                                <!-- Rainfall Field -->
+                                <div class="form-group mb-4">
+                                    <label for="rainfall" class="form-label fw-bold">
+                                        <i class="bi bi-cloud-rain-fill text-info"></i> Rainfall (mm)
+                                    </label>
+                                    <div class="input-group input-group-lg">
+                                        <input type="number" name="rainfall" id="rainfall" class="form-control shadow-sm" 
+                                               placeholder="e.g., 120" min="0" max="500" step="0.1" required>
+                                        <span class="input-group-text">mm</span>
+                                    </div>
+                                    <small class="text-muted d-block mt-2">
+                                        <i class="bi bi-info-circle"></i> Annual rainfall in millimeters (0-500mm)
+                                    </small>
+                                </div>
+
+                                <!-- pH Field -->
+                                <div class="form-group mb-4">
+                                    <label for="ph" class="form-label fw-bold">
+                                        <i class="bi bi-droplet-fill text-success"></i> Soil pH
+                                    </label>
+                                    <div class="input-group input-group-lg">
+                                        <input type="number" name="ph" id="ph" class="form-control shadow-sm" 
+                                               placeholder="e.g., 6.5" min="3.5" max="9" step="0.1" required>
+                                        <span class="input-group-text">pH</span>
+                                    </div>
+                                    <small class="text-muted d-block mt-2">
+                                        <i class="bi bi-info-circle"></i> Soil acidity level (3.5-9)
+                                    </small>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn btn-success btn-lg w-100 fw-bold mt-4 shadow-lg">
+                                    <i class="bi bi-magic"></i> Get Recommendation
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    {% if crop %}
+                    <div class="mt-5 animate-pop-in">
+                        <!-- Success Alert -->
+                        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill fs-5 me-3"></i>
+                                <div>
+                                    <strong>Success!</strong> Your personalized recommendation is ready.
+                                </div>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+
+                        <!-- Result Cards -->
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <div class="card result-card crop-card shadow-lg">
+                                    <div class="card-body text-center p-5">
+                                        <div class="crop-icon mb-3">
+                                            <i class="bi bi-flower1"></i>
+                                        </div>
+                                        <h6 class="text-muted small fw-bold">RECOMMENDED CROP</h6>
+                                        <h2 class="fw-bold crop-name mt-3">{{ crop }}</h2>
+                                        <p class="text-success small mt-2">
+                                            <i class="bi bi-check2-circle"></i> Perfect match for your conditions
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card result-card yield-card shadow-lg">
+                                    <div class="card-body text-center p-5">
+                                        <div class="yield-icon mb-3">
+                                            <i class="bi bi-graph-up"></i>
+                                        </div>
+                                        <h6 class="text-muted small fw-bold">EXPECTED YIELD</h6>
+                                        <h2 class="fw-bold yield-value mt-3">{{ yield_value }}</h2>
+                                        <p class="text-info small mt-2">kg per acre</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a href="/prediction/download" class="btn btn-outline-success btn-lg btn-block fw-bold shadow-sm">
+                                <i class="bi bi-download"></i> Download Latest Recommendation
+                            </a>
+                        </div>
+                    </div>
+
+                    {% if insights %}
+                    <div class="card shadow-lg border-0 mt-4">
+                        <div class="card-header bg-success bg-gradient">
+                            <h5 class="text-white mb-0"><i class="bi bi-lightbulb-fill"></i> Recommendation Insights</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="mb-3 text-muted">These details show how your input aligns with the recommended crop’s ideal conditions.</p>
+                            <ul class="list-group list-group-flush">
+                                {% for insight in insights %}
+                                <li class="list-group-item">{{ insight }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if history %}
+                    <div class="card shadow-lg border-0 mt-4 mb-4">
+                        <div class="card-header bg-success bg-gradient">
+                            <h5 class="text-white mb-0"><i class="bi bi-clock-history"></i> Recent Predictions</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Crop</th>
+                                            <th>Yield</th>
+                                            <th>Soil</th>
+                                            <th>Temp</th>
+                                            <th>Rain</th>
+                                            <th>pH</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in history %}
+                                        <tr>
+                                            <td>{{ item.timestamp }}</td>
+                                            <td>{{ item.crop }}</td>
+                                            <td>{{ item.yield_value }} kg</td>
+                                            <td>{{ item.soil }}</td>
+                                            <td>{{ item.temperature }}°C</td>
+                                            <td>{{ item.rainfall }}mm</td>
+                                            <td>{{ item.ph }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+
+                    <!-- Error Message -->
+                    {% if error %}
+                    <div class="alert alert-danger alert-dismissible fade show mt-4 border-0 shadow-sm" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-exclamation-triangle-fill fs-5 me-3"></i>
+                            <div>
+                                <strong>Error:</strong> {{ error }}
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section text-light py-5">
+        <div class="container">
+            <div class="text-center small text-white">
+                <p>© 2026 AgriSmart. All rights reserved. <i class="bi bi-heart-fill text-danger"></i> Made for farmers</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form validation
+        document.getElementById('predictionForm').addEventListener('submit', function(e) {
+            const temp = parseFloat(document.getElementById('temperature').value);
+            const rainfall = parseFloat(document.getElementById('rainfall').value);
+            const ph = parseFloat(document.getElementById('ph').value);
+            
+            if (temp < 0 || temp > 50) {
+                e.preventDefault();
+                alert('Temperature must be between 0-50°C');
+                return false;
+            }
+            if (rainfall < 0 || rainfall > 500) {
+                e.preventDefault();
+                alert('Rainfall must be between 0-500mm');
+                return false;
+            }
+            if (ph < 3.5 || ph > 9) {
+                e.preventDefault();
+                alert('pH must be between 3.5-9');
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

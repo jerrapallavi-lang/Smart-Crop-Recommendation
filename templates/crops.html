@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Catalog - AgriSmart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .header-bg-image {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
+            opacity: 0.15;
+            mix-blend-mode: soft-light;
+            z-index: 0;
+        }
+        .crops-header { position: relative; overflow: hidden; }
+        .header-content { position: relative; z-index: 2; }
+        
+        /* New Theme: Modern Teal & Slate */
+        :root { --theme-primary: #0d9488; --theme-dark: #115e59; }
+        .bg-success { background-color: var(--theme-primary) !important; }
+        .text-success { color: var(--theme-primary) !important; }
+        .btn-success { background-color: var(--theme-primary) !important; border-color: var(--theme-dark) !important; }
+        .btn-success:hover { background-color: var(--theme-dark) !important; }
+        .btn-outline-success { color: var(--theme-primary) !important; border-color: var(--theme-primary) !important; }
+        .btn-outline-success:hover { background-color: var(--theme-primary) !important; color: white !important; }
+        .btn-check:checked + .btn-outline-success { background-color: var(--theme-primary) !important; border-color: var(--theme-primary) !important; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top navbar-custom">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold logo-text" href="/">
+                <i class="bi bi-leaf-fill leaf-icon"></i> AgriSmart
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/prediction">Prediction</a>
+                    <a class="nav-link active" href="/crops">Crops</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="crops-header py-5" style="background: linear-gradient(135deg, #0f172a, #0d9488); color: white;">
+        <div class="header-bg-image"></div>
+        <div class="container text-center header-content">
+            <h1 class="display-4 fw-bold mb-3">
+                <i class="bi bi-flower2"></i> Our Crop Collection
+            </h1>
+            <p class="lead">Explore detailed information about each crop we support</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section py-4 bg-light border-bottom">
+        <div class="container">
+            <div class="row gy-3 align-items-center">
+                <div class="col-md-4">
+                    <h5 class="text-muted mb-0"><i class="bi bi-funnel"></i> Filter by Category</h5>
+                </div>
+                <div class="col-md-4">
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="filter" id="filter-all" checked>
+                        <label class="btn btn-outline-success" for="filter-all">All Crops</label>
+
+                        <input type="radio" class="btn-check" name="filter" id="filter-cereal">
+                        <label class="btn btn-outline-success" for="filter-cereal">Cereals</label>
+
+                        <input type="radio" class="btn-check" name="filter" id="filter-cash">
+                        <label class="btn btn-outline-success" for="filter-cash">Cash Crops</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <input id="crop-search" class="form-control form-control-lg" type="search" placeholder="Search crops by name..." aria-label="Search crops">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Crops Grid -->
+    <section class="crops-section py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Rice Card -->
+                <div class="col-md-6 col-lg-4 crop-item" data-category="cereal">
+                    <a href="/crops/rice" class="text-decoration-none">
+                        <div class="crop-card-grid">
+                            <div class="crop-image">
+                                <img src="https://img.etimg.com/thumb/width-420,height-315,imgsize-98586,resizemode-75,msid-93695073/news/economy/agriculture/paddy-sowing-continues-to-lag-acreage-down-by-8-25-per-cent-till-august-18/paddy.jpg" alt="Rice" style="width:100%; height:auto; object-fit:cover;">
+                                <div class="crop-overlay">
+                                    <span class="crop-badge">Cereal</span>
+                                </div>
+                            </div>
+                            <div class="crop-card-content">
+                                <h4 class="crop-title"><i class="bi bi-flower2"></i> Rice</h4>
+                                <p class="crop-subtitle">Most important staple crop</p>
+                                <div class="crop-stats">
+                                    <small><i class="bi bi-droplet-fill text-info"></i> High Rainfall</small>
+                                    <small><i class="bi bi-thermometer-half text-warning"></i> Warm Climate</small>
+                                </div>
+                                <button class="btn btn-success btn-sm mt-3 w-100">
+                                    View Details <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Wheat Card -->
+                <div class="col-md-6 col-lg-4 crop-item" data-category="cereal">
+                    <a href="/crops/wheat" class="text-decoration-none">
+                        <div class="crop-card-grid">
+                            <div class="crop-image">
+                                <img src="https://www.world-grain.com/ext/resources/2023/07/28/wheat-ears-field_NITR---STOCK.ADOBE.COM_e.jpg?height=635&t=1740666388&width=1200" alt="Wheat" style="width:100%; height:auto; object-fit:cover;">
+                                <div class="crop-overlay">
+                                    <span class="crop-badge">Cereal</span>
+                                </div>
+                            </div>
+                            <div class="crop-card-content">
+                                <h4 class="crop-title"><i class="bi bi-shop"></i> Wheat</h4>
+                                <p class="crop-subtitle">Golden grain of prosperity</p>
+                                <div class="crop-stats">
+                                    <small><i class="bi bi-droplet-fill text-info"></i> Moderate Rain</small>
+                                    <small><i class="bi bi-thermometer-half text-warning"></i> Cool Season</small>
+                                </div>
+                                <button class="btn btn-success btn-sm mt-3 w-100">
+                                    View Details <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Millet Card -->
+                <div class="col-md-6 col-lg-4 crop-item" data-category="cereal">
+                    <a href="/crops/millet" class="text-decoration-none">
+                        <div class="crop-card-grid">
+                            <div class="crop-image">
+                                <img src="https://www.smartfood.org/wp-content/uploads/2020/08/millet-plant-671x403-1.jpg" alt="Millet" style="width:100%; height:auto; object-fit:cover;">
+                                <div class="crop-overlay">
+                                    <span class="crop-badge">Cereal</span>
+                                </div>
+                            </div>
+                            <div class="crop-card-content">
+                                <h4 class="crop-title"><i class="bi bi-brightness-high"></i> Millet</h4>
+                                <p class="crop-subtitle">Drought-resistant powerhouse</p>
+                                <div class="crop-stats">
+                                    <small><i class="bi bi-droplet-fill text-info"></i> Low Rainfall</small>
+                                    <small><i class="bi bi-thermometer-half text-warning"></i> Hot Climate</small>
+                                </div>
+                                <button class="btn btn-success btn-sm mt-3 w-100">
+                                    View Details <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Corn Card -->
+                <div class="col-md-6 col-lg-4 crop-item" data-category="cereal">
+                    <a href="/crops/corn" class="text-decoration-none">
+                        <div class="crop-card-grid">
+                            <div class="crop-image">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgZP4eC1EhJ0Vo4IUc3brUyQY29SE8SvdLpg&s" alt="Corn" style="width:100%; height:auto; object-fit:cover;">
+                                <div class="crop-overlay">
+                                    <span class="crop-badge">Cereal</span>
+                                </div>
+                            </div>
+                            <div class="crop-card-content">
+                                <h4 class="crop-title"><i class="bi bi-cloud-sun"></i> Corn</h4>
+                                <p class="crop-subtitle">Versatile agricultural crop</p>
+                                <div class="crop-stats">
+                                    <small><i class="bi bi-droplet-fill text-info"></i> Good Rainfall</small>
+                                    <small><i class="bi bi-thermometer-half text-warning"></i> Moderate Temp</small>
+                                </div>
+                                <button class="btn btn-success btn-sm mt-3 w-100">
+                                    View Details <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Sugarcane Card -->
+                <div class="col-md-6 col-lg-4 crop-item" data-category="cash">
+                    <a href="/crops/sugarcane" class="text-decoration-none">
+                        <div class="crop-card-grid">
+                            <div class="crop-image">
+                                <img src="https://plantix.net/en/library/assets/custom/crop-images/sugarcane.jpeg" alt="Sugarcane" style="width:100%; height:auto; object-fit:cover;">
+                                <div class="crop-overlay">
+                                    <span class="crop-badge">Cash Crop</span>
+                                </div>
+                            </div>
+                            <div class="crop-card-content">
+                                <h4 class="crop-title"><i class="bi bi-droplets"></i> Sugarcane</h4>
+                                <p class="crop-subtitle">Sweet agricultural treasure</p>
+                                <div class="crop-stats">
+                                    <small><i class="bi bi-droplet-fill text-info"></i> High Rainfall</small>
+                                    <small><i class="bi bi-thermometer-half text-warning"></i> Tropical</small>
+                                </div>
+                                <button class="btn btn-success btn-sm mt-3 w-100">
+                                    View Details <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Alluvial Specialty Card -->
+                <div class="col-md-6 col-lg-4 crop-item" data-category="cash">
+                    <a href="/crops/alluvial" class="text-decoration-none">
+                        <div class="crop-card-grid">
+                            <div class="crop-image">
+                                <img src="https://www.worldatlas.com/r/w1200/upload/47/20/0e/shutterstock-310464542.jpg" alt="Alluvial Soil Crops" style="width:100%; height:auto; object-fit:cover;">
+                                <div class="crop-overlay">
+                                    <span class="crop-badge">Premium</span>
+                                </div>
+                            </div>
+                            <div class="crop-card-content">
+                                <h4 class="crop-title"><i class="bi bi-cup-hot"></i> Alluvial Crops</h4>
+                                <p class="crop-subtitle">Premium specialty crops</p>
+                                <div class="crop-stats">
+                                    <small><i class="bi bi-droplet-fill text-info"></i> Balanced</small>
+                                    <small><i class="bi bi-thermometer-half text-warning"></i> Optimal</small>
+                                </div>
+                                <button class="btn btn-success btn-sm mt-3 w-100">
+                                    View Details <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section text-light py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="bi bi-leaf-fill text-success"></i> AgriSmart</h5>
+                    <p class="small text-white">Transforming agriculture with intelligent recommendations</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="text-white">Quick Links</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="/" class="text-decoration-none text-white">Prediction Tool</a></li>
+                        <li><a href="/crops" class="text-decoration-none text-white">Crop Guide</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="text-white">Features</h6>
+                    <ul class="list-unstyled small">
+                        <li><i class="bi bi-check-circle text-success"></i> <span class="text-white">AI Predictions</span></li>
+                        <li><i class="bi bi-check-circle text-success"></i> <span class="text-white">Weather Data</span></li>
+                        <li><i class="bi bi-check-circle text-success"></i> <span class="text-white">Yield Estimates</span></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="text-center small text-white">
+                <p>© 2026 AgriSmart. All rights reserved. <i class="bi bi-heart-fill text-danger"></i></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const cropItems = document.querySelectorAll('.crop-item');
+        const cropSearch = document.getElementById('crop-search');
+
+        function updateCropFilters() {
+            const filter = document.querySelector('input[name="filter"]:checked').id.replace('filter-', '');
+            const query = cropSearch.value.trim().toLowerCase();
+
+            cropItems.forEach(item => {
+                const title = item.querySelector('.crop-title').textContent.toLowerCase();
+                const matchesSearch = !query || title.includes(query);
+                const matchesCategory = filter === 'all' || item.dataset.category === filter;
+
+                if (matchesSearch && matchesCategory) {
+                    item.style.display = 'block';
+                    item.classList.add('animate-pop-in');
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        document.querySelectorAll('input[name="filter"]').forEach(radio => {
+            radio.addEventListener('change', updateCropFilters);
+        });
+
+        cropSearch.addEventListener('input', updateCropFilters);
+    </script>
+</body>
+</html>

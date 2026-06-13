@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ crop_name }} - AgriSmart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* New Theme: Modern Teal & Slate */
+        :root { --theme-primary: #0d9488; --theme-dark: #115e59; }
+        .bg-success { background-color: var(--theme-primary) !important; }
+        .text-success { color: var(--theme-primary) !important; }
+        .btn-success { background-color: var(--theme-primary) !important; border-color: var(--theme-dark) !important; }
+        .btn-success:hover { background-color: var(--theme-dark) !important; }
+        .btn-outline-success { color: var(--theme-primary) !important; border-color: var(--theme-primary) !important; }
+        .btn-outline-success:hover { background-color: var(--theme-primary) !important; color: white !important; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top navbar-custom">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold logo-text" href="/">
+                <i class="bi bi-leaf-fill leaf-icon"></i> AgriSmart
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/prediction">Prediction</a>
+                    <a class="nav-link" href="/crops">Crops</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav bg-light py-3 border-bottom">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/crops">Crops</a></li>
+                    <li class="breadcrumb-item active">{{ crop_name }}</li>
+                </ol>
+            </nav>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Image -->
+    <section class="crop-hero">
+        <img src="{{ crop_image }}" alt="{{ crop_name }}" class="crop-hero-image">
+        <div class="crop-hero-overlay"></div>
+        <div class="crop-hero-content">
+            <div class="container">
+                <h1 class="display-3 fw-bold text-white mb-3">
+                    {{ crop_icon }} {{ crop_name }}
+                </h1>
+                <p class="lead text-light">{{ crop_tagline }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="crop-detail-section py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Main Content Column -->
+                <div class="col-lg-8">
+                    <!-- Overview Card -->
+                    <div class="card shadow-lg border-0 mb-4">
+                        <div class="card-header bg-success bg-gradient">
+                            <h5 class="text-white mb-0"><i class="bi bi-info-circle"></i> Overview</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="fs-5">{{ crop_description }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Growing Conditions -->
+                    <div class="card shadow-lg border-0 mb-4">
+                        <div class="card-header bg-success bg-gradient">
+                            <h5 class="text-white mb-0"><i class="bi bi-cloud-rain-fill"></i> Growing Conditions</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="condition-item">
+                                        <h6 class="text-success fw-bold"><i class="bi bi-thermometer-half"></i> Temperature</h6>
+                                        <p class="text-muted">{{ crop_temperature }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="condition-item">
+                                        <h6 class="text-success fw-bold"><i class="bi bi-cloud-rain-fill"></i> Rainfall</h6>
+                                        <p class="text-muted">{{ crop_rainfall }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="condition-item">
+                                        <h6 class="text-success fw-bold"><i class="bi bi-droplet-fill"></i> Soil pH</h6>
+                                        <p class="text-muted">{{ crop_ph }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="condition-item">
+                                        <h6 class="text-success fw-bold"><i class="bi bi-geo-alt-fill"></i> Soil Type</h6>
+                                        <p class="text-muted">{{ crop_soil }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Benefits -->
+                    <div class="card shadow-lg border-0 mb-4">
+                        <div class="card-header bg-success bg-gradient">
+                            <h5 class="text-white mb-0"><i class="bi bi-star-fill"></i> Benefits</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <ul class="list-group list-group-flush">
+                                {% for benefit in crop_benefits %}
+                                <li class="list-group-item border-0 py-2">
+                                    <i class="bi bi-check-circle-fill text-success"></i> {{ benefit }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Cultivation Process -->
+                    <div class="card shadow-lg border-0 mb-4">
+                        <div class="card-header bg-success bg-gradient">
+                            <h5 class="text-white mb-0"><i class="bi bi-seedling"></i> Cultivation Steps</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="timeline">
+                                {% for idx, step in enumerate(crop_steps) %}
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">{{ idx + 1 }}</div>
+                                    <div class="timeline-content">
+                                        <h6 class="fw-bold text-success">{{ step['title'] }}</h6>
+                                        <p class="text-muted">{{ step['description'] }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Quick Stats -->
+                    <div class="card shadow-lg border-0 mb-4 sticky-top" style="top: 80px;">
+                        <div class="card-header bg-success bg-gradient">
+                            <h5 class="text-white mb-0"><i class="bi bi-graph-up"></i> Quick Stats</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="stat-item mb-4">
+                                <div class="stat-label">Average Yield</div>
+                                <div class="stat-value">{{ crop_yield }}</div>
+                                <small class="text-muted">kg per acre</small>
+                            </div>
+                            <div class="stat-item mb-4">
+                                <div class="stat-label">Growing Season</div>
+                                <div class="stat-value">{{ crop_season }}</div>
+                                <small class="text-muted">months</small>
+                            </div>
+                            <div class="stat-item mb-4">
+                                <div class="stat-label">Market Demand</div>
+                                <div class="stat-value">
+                                    <span class="badge bg-success">{{ crop_demand }}</span>
+                                </div>
+                                <small class="text-muted">Commercial Value</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Conditions -->
+                    <div class="card shadow-lg border-0 mb-4">
+                        <div class="card-header bg-success bg-gradient">
+                            <h5 class="text-white mb-0"><i class="bi bi-check-all"></i> Optimal Conditions</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="condition-badge">
+                                <i class="bi bi-thermometer-half text-warning"></i>
+                                <strong>{{ crop_temp_range }}°C</strong>
+                                <br><small>Temperature</small>
+                            </div>
+                            <div class="condition-badge mt-3">
+                                <i class="bi bi-cloud-rain-fill text-info"></i>
+                                <strong>{{ crop_rain_range }}mm</strong>
+                                <br><small>Annual Rainfall</small>
+                            </div>
+                            <div class="condition-badge mt-3">
+                                <i class="bi bi-droplet-fill text-success"></i>
+                                <strong>{{ crop_ph_range }}</strong>
+                                <br><small>Soil pH</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <a href="/prediction" class="btn btn-success btn-lg w-100 shadow-lg mb-3">
+                        <i class="bi bi-magic"></i> Get Recommendation
+                    </a>
+                    <a href="/crops" class="btn btn-outline-success btn-lg w-100">
+                        <i class="bi bi-arrow-left"></i> Back to Crops
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section py-5 bg-light">
+        <div class="container">
+            <h3 class="text-center fw-bold mb-5"><i class="bi bi-images"></i> Crop Gallery</h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="gallery-item">
+                        <img src="{{ crop_image }}" alt="{{ crop_name }}">
+                        <div class="gallery-caption">{{ crop_name }} Plant</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="gallery-item">
+                        <img src="{{ crop_field_image }}" alt="{{ crop_name }} Field">
+                        <div class="gallery-caption">Field View</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section text-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="bi bi-leaf-fill text-success"></i> AgriSmart</h5>
+                    <p class="small text-muted">Transforming agriculture with intelligent recommendations</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="/prediction" class="text-decoration-none text-muted">Prediction Tool</a></li>
+                        <li><a href="/crops" class="text-decoration-none text-muted">Crop Guide</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6>Features</h6>
+                    <ul class="list-unstyled small">
+                        <li><i class="bi bi-check-circle text-success"></i> AI Predictions</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Crop Details</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Yield Estimates</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="text-center small text-muted">
+                <p>© 2026 AgriSmart. All rights reserved. <i class="bi bi-heart-fill text-danger"></i></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
