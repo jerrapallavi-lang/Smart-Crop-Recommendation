@@ -1,10 +1,22 @@
 
 # Smart Crop Recommendation System
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white" alt="Python 3.12" />
+  <img src="https://img.shields.io/badge/Flask-3.0-000000?logo=flask&logoColor=white" alt="Flask" />
+  <img src="https://img.shields.io/badge/ML-Scikit%20Learn-F7931E?logo=scikitlearn&logoColor=white" alt="Scikit-learn" />
+</p>
+
 A Flask-based web application that recommends the most suitable crop and estimates expected yield based on soil type, temperature, rainfall, and soil pH.
 
 ## Overview
 This project helps farmers and agricultural planners decide which crop is most suitable for given field conditions. The app uses a trained machine learning model and provides user-friendly recommendations through a responsive web interface.
+
+## How It Works
+1. The user enters field parameters such as temperature, rainfall, soil type, and pH.
+2. The application preprocesses the input and passes it to a trained model.
+3. The model predicts the best crop and estimated yield.
+4. Results are displayed with basic recommendations and downloadable history logs.
 
 ## Features
 - Crop recommendation based on soil and climate parameters
@@ -61,6 +73,9 @@ Smart_Crop_Recommendation_System/
 
 ## Usage
 Enter values such as soil type, temperature, rainfall, and pH. The system predicts the best crop and estimated yield, then displays actionable recommendations.
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Notes
 - This project is designed as a practical agriculture ML demo.
