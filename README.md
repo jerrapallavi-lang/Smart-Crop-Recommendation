@@ -1,47 +1,69 @@
 
-# Smart Crop Recommendation & Yield Prediction System
+# Smart Crop Recommendation System
 
-A polished Flask web app that predicts the best crop and expected yield based on soil type, temperature, rainfall, and soil pH.
+A Flask-based web application that recommends the most suitable crop and estimates expected yield based on soil type, temperature, rainfall, and soil pH.
+
+## Overview
+This project helps farmers and agricultural planners decide which crop is most suitable for given field conditions. The app uses a trained machine learning model and provides user-friendly recommendations through a responsive web interface.
 
 ## Features
-- Responsive Bootstrap UI with clean modern design
-- Crop recommendation and yield prediction using trained machine learning models
-- Personalized insights based on user input
-- Prediction history tracking during each session
-- Download the latest recommendation as a CSV file
-- Mobile-accessible when the Flask app is served on a LAN address
+- Crop recommendation based on soil and climate parameters
+- Yield prediction for the selected crop
+- Clean, responsive Bootstrap-based UI
+- Session-based prediction history
+- CSV export for recent recommendations
+- Lightweight local deployment suitable for demos and learning projects
 
-## Technologies
+## Tech Stack
 - Python 3.12
 - Flask
-- scikit-learn / machine learning model serialization
-- Bootstrap 5 for UI
+- scikit-learn
+- Pandas and NumPy
+- Bootstrap 5
 
-## How to Run
-1. Create and activate a virtual environment (recommended)
+## Project Structure
+```text
+Smart_Crop_Recommendation_System/
+├── app.py
+├── README.md
+├── requirements.txt
+├── dataset/
+│   └── crop_data.csv
+├── models/
+├── static/
+├── templates/
+├── training/
+│   └── train_model.py
+└── latest_prediction.csv
+```
+
+## Setup
+1. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   .\venv\Scripts\activate
+   ```
 2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-3. Train the model once if not already available:
+3. Train the model if needed:
    ```bash
    python training/train_model.py
    ```
-4. Run the application:
+4. Start the app:
    ```bash
    python app.py
    ```
-5. Open the app in your browser:
-   - On this machine: `http://127.0.0.1:5000`
-   - On another device on your local network: `http://<your-lan-ip>:5000`
+5. Open in browser:
+   - Local: http://127.0.0.1:5000
+   - LAN: http://<your-lan-ip>:5000
 
-## Notes for Resume or Demo
-- This project demonstrates full-stack development with a Flask backend and Bootstrap frontend.
-- The app now includes a one-click CSV export for the most recent crop recommendation, making it easier to share results.
-- It also captures session prediction history and generates actionable insights for farmers.
+## Usage
+Enter values such as soil type, temperature, rainfall, and pH. The system predicts the best crop and estimated yield, then displays actionable recommendations.
 
-## Deployment Tips
-- Use a production WSGI server like `gunicorn` for deployment.
-- Host on a cloud VM or container and map port `5000`.
-- Ensure `FLASK_ENV` is set to `production` and session secret is secure.
+## Notes
+- This project is designed as a practical agriculture ML demo.
+- It can be extended with weather API integration, model improvements, or farmer-specific dashboards.
+- The current repository includes the project documentation and source code needed to run the application locally.
 

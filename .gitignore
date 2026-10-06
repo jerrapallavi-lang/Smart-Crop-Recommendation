@@ -28,6 +28,11 @@ instance/
 
 # Models (generated during training)
 models/
+models/*.pkl
+models/*.joblib
+
+# Runtime output files
+latest_prediction.csv
 
 # Environment variables
 .env
@@ -57,3 +62,14 @@ htmlcov/
 # IDE specific
 .sublime-project
 .sublime-workspace
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment folders
+.venv/
+venv/
+ENV/
